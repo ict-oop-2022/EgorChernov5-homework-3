@@ -20,6 +20,7 @@ if(NOT GCOV_PATH)
 endif()
 
 add_subdirectory(labs_src)
+add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/extlibs/11Zip)
 
 enable_testing()
 
