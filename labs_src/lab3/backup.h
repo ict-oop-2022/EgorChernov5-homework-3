@@ -22,21 +22,21 @@ private:
     std::string type;
     std::string path;
     std::vector<std::string> files;
+    int count;
 public:
-    void setName(std::string name);
-    void setZipType(std::string type);
-    void setPath(std::string path);
-    void addObject(JobObject *file);
-    void removeObject(JobObject *file);
+    BackupJob(std::string name, std::string type, std::string path);
+    void addObject(std::vector <std::string> files);
+    void removeObject(std::vector <std::string> files);
     void createRestorePoint();
+    ~BackupJob();
 };
 
 class JobObject {
 private:
-    std::string path;
     std::string name;
+    std::string path;
 public:
-    JobObject(std::string path);
+    JobObject(std::string name, std::string path);
     std::string getName();
 };
 

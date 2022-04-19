@@ -1,40 +1,59 @@
 #include "backup.h"
 
-void BackupJob::setName(std::string name) {
+BackupJob::BackupJob(std::string name, std::string type, std::string path) {
     this->name = name;
+
+    if (type == "Split storages")
+        this->type = type;
+    else if (type == "Single storage")
+        this->type = type;
+    else
+        throw std::invalid_argument("Type didn't found.");
+
+    this->path = path;
+
+    count = 0;
 }
 
-void BackupJob::setZipType(std::string type) {
-    this->type = type;
-    if (type == "Split storages") {
-        this->type = type;
-    } else if (type == "Single storage") {
-        this->type = type;
-    } else {
-        throw std::invalid_argument("Type didn't found.");
+void BackupJob::addObject(std::vector <std::string> files) {
+    if (this->files.empty())
+        this->files.assign(files.begin(), files.end());
+    else {
+        for (int i = 0; i < files.size(); i++) {
+            int check = 1;
+            for (int j = 0; j < this->files.size(); j++) {
+                if (files[i] == this->files[j]) {
+                    check = 0;
+                    break;
+                }
+            }
+            // проверка на новый файл
+            if (check)
+                this->files.push_back(files[i]);
+        }
     }
 }
 
-void BackupJob::setPath(std::string path) {
-    this->path = path;
-}
-
-void BackupJob::addObject(JobObject *file) {
-    this->files.push_back(file->getName());
-}
-
-void BackupJob::removeObject(JobObject *file) {
-    auto n = find(this->files.begin(), this->files.end(), file->getName());
-    this->files.erase(n);
+void BackupJob::removeObject(std::vector <std::string> files) {
+    for (int i = 0; i < files.size(); i++) {
+        auto n = find(this->files.begin(), this->files.end(), files[i]);
+        this->files.erase(n);
+    }
 }
 
 void BackupJob::createRestorePoint() {
+    count += 1;
 
 }
 
-JobObject::JobObject(std::string path) {
+JobObject::JobObject(std::string name, std::string path) {
     this->path = path;
     this->name = path.substr(path.find_last_of('/') + 1);
+
+    /*for (int i = 0; i < files.size(); i++) {
+        std::string name = files[i].substr(files[i].find_last_of('/') + 1);
+        std::string path = files[i];
+    }*/
 }
 
 std::string JobObject::getName() {
