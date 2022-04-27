@@ -1,90 +1,153 @@
 #include "backup.h"
 
-BackupJob::BackupJob(std::string name, std::string type, std::string path) {
+RestorePoint::RestorePoint(std::string name, std::string type, std::string path, std::vector <std::string> files) {
     this->name = name;
-
-    if (type == "Split storages")
-        this->type = type;
-    else if (type == "Single storage")
-        this->type = type;
-    else
-        throw std::invalid_argument("Type didn't found.");
 
     this->path = path;
 
-    count = 0;
+    if (type == "Split storages") {
+        this->type = type;
+        for (int i = 0; i < files.size(); i++) {
+            // create jobObject and his storage, after that create dir which have dir with copy file
+        }
+    } else if (type == "Single storage") {
+        this->type = type;
+        for (int i = 0; i < files.size(); i++) {
+            // create jobObject and his storage, after that create dir with files
+        }
+    } else
+        throw std::invalid_argument("Type didn't found.");
 }
 
-void BackupJob::addObject(std::vector <std::string> files) {
-    if (this->files.empty())
-        this->files.assign(files.begin(), files.end());
-    else {
-        for (int i = 0; i < files.size(); i++) {
+///////////////////
+BackupJob BackupJob::setName(std::string name) {
+    this->name = name;
+    count = 0;
+    return *this;
+}
+
+BackupJob BackupJob::setType(std::string type) {
+    if (type == "Split storages")
+        this->typeOfStorage = type;
+    else if (type == "Single storage")
+        this->typeOfStorage = type;
+    else
+        throw std::invalid_argument("Type didn't found.");
+    return *this;
+}
+
+BackupJob BackupJob::setPath(std::string path) {
+    if (path == path.substr(path.find_last_of("/") + 1))
+        this->pathOfNewStorage = "./" + path;
+    else
+        this->pathOfNewStorage = path;
+    return *this;
+}
+
+void BackupJob::addJobObject(std::vector <std::string> listOfFiles) {
+    if (this->listOfFiles.empty()) {
+        for (int i = 0; i < listOfFiles.size(); ++i)
+            this->listOfFiles.push_back(new JobObject(listOfFiles[i]));
+    } else {
+        for (int i = 0; i < listOfFiles.size(); ++i) {
             int check = 1;
-            for (int j = 0; j < this->files.size(); j++) {
-                if (files[i] == this->files[j]) {
+
+            for (int j = 0; j < this->listOfFiles.size(); ++j) {
+                // приводим к одному виду
+                if (listOfFiles[i] == listOfFiles[i].substr(listOfFiles[i].find_last_of("/") + 1))
+                    listOfFiles[i] = "./" + listOfFiles[i];
+
+                if (listOfFiles[i] == this->listOfFiles[j]->getPath()) {
                     check = 0;
                     break;
                 }
             }
             // проверка на новый файл
             if (check)
-                this->files.push_back(files[i]);
+                this->listOfFiles.push_back(new JobObject(listOfFiles[i]));
+            else
+                std::cout << listOfFiles[i] + " - this file already exists in the Backup Job." << std::endl;
         }
     }
 }
 
-void BackupJob::removeObject(std::vector <std::string> files) {
-    for (int i = 0; i < files.size(); i++) {
-        auto n = find(this->files.begin(), this->files.end(), files[i]);
-        this->files.erase(n);
+void BackupJob::removeJobObject(std::vector <std::string> listOfFiles) {
+    for (int i = 0; i < listOfFiles.size(); ++i) {
+        /*auto n = find(this->listOfFiles.begin(), this->listOfFiles.end(), listOfFiles[i]);
+        this->listOfFiles.erase(n);*/
+        int check = 1;
+        // приводим к одному виду
+        if (listOfFiles[i] == listOfFiles[i].substr(listOfFiles[i].find_last_of("/") + 1))
+            listOfFiles[i] = "./" + listOfFiles[i];
+        // удаление файлов
+        for (int j = 0; j < this->listOfFiles.size(); ++j) {
+            // проверка на совпадение
+            if (listOfFiles[i] == this->listOfFiles[j]->getPath()) {
+                auto n = find(this->listOfFiles.begin(), this->listOfFiles.end(), this->listOfFiles[j]);
+                delete this->listOfFiles[j];
+                this->listOfFiles.erase(n);
+                check = 0;
+                break;
+            }
+        }
+
+        if (check) {
+            std::cout << listOfFiles[i] + " - this file is not in the Backup Job." << std::endl;
+        }
     }
 }
 
-void BackupJob::createRestorePoint() {
-    count += 1;
+RestorePoint* BackupJob::createRestorePoint() {
+    /*count += 1;
+    if (name.empty()) {
+        throw std::invalid_argument("You should set a name of Restore Point.");
+    }
 
+    if (typeOfStorage.empty()) {
+        throw std::invalid_argument("You should set the type of Storage.");
+    }
+
+    if (pathOfNewStorage.empty()) {
+        throw std::invalid_argument("You should set the new path.");
+    }
+
+    name = name + '_' + std::to_string(count);
+
+    return new RestorePoint(name, typeOfStorage, pathOfNewStorage, listOfFiles);*/
+    Backup *backup = new ConcreteBackup(listOfFiles);
+    backup->FactoryMethod();
+
+
+    delete backupJob;
 }
 
-JobObject::JobObject(std::string name, std::string path) {
-    this->path = path;
+BackupJob::~BackupJob() {
+    for (int i = 0; i < listOfFiles.size(); ++i) {
+        delete listOfFiles[i];
+    }
+}
+
+///////////////////
+JobObject::JobObject(std::string path) {
+    if (path == path.substr(path.find_last_of("/") + 1))
+        this->path = "./" + path;
+    else
+        this->path = path;
     this->name = path.substr(path.find_last_of('/') + 1);
-
-    /*for (int i = 0; i < files.size(); i++) {
-        std::string name = files[i].substr(files[i].find_last_of('/') + 1);
-        std::string path = files[i];
-    }*/
 }
 
-std::string JobObject::getName() {
-    return name;
+std::string JobObject::getPath() {
+    return this->path;
 }
 
-void Storage::copy(std::vector<std::string> files, std::string type, std::string path) {
-    std::ofstream fout;
-    std::ifstream fin;
-    if (type == "Split storages") {
-        for (int i = 0; i < files.size(); i++) {
-            try {
-                std::string str;
-                fin.open(files[i]);
-                fout.open(path);
-                while (!fin.eof()) {
-                    str = "";
-                    getline(fin, str);
-                    fout << str;
-                }
-            }
-            catch (const std::exception &ex) {
-                std::cout << ex.what() << std::endl;
-                throw std::invalid_argument("Path isn't correct.");
-            }
+JobObject::~JobObject() {}
 
+///////////////////
+Backup::Backup(std::vector<JobObject *> listOfFiles) {
+    this->listOfFiles.assign(listOfFiles.begin(), listOfFiles.end());
+}
 
-        }
-    } else if (type == "Single storage") {
-
-    } else {
-
-    }
+///////////////////
+RestorePoint* ConcreteBackup::FactoryMethod() const {
+    return nullptr;
 }

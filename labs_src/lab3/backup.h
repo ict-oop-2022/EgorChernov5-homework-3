@@ -6,43 +6,62 @@
 #include "elzip.hpp"
 #include <algorithm>
 
-class JobObject;
-
-class Backup {
-
+class RestorePoint {
+private:
+    std::string name;
+    std::string type;
+    std::string path;
+public:
+    RestorePoint(std::string name, std::string type, std::string path, std::vector <std::string> files);
 };
 
-class RestorePoint {
+class JobObject {
+private:
+    std::string path;
+    std::string name;
+public:
+    JobObject(std::string path);
+    std::string getPath();
+    ~JobObject();
+};
 
+class Backup {
+private:
+    std::vector<RestorePoint *> listOfRestorePoint;
+    std::vector<JobObject *> listOfFiles;
+public:
+    Backup(std::vector<JobObject *> listOfFiles);
+    virtual RestorePoint* FactoryMethod() const = 0;
+};
+
+class ConcreteBackup: public Backup {
+public:
+    ConcreteBackup(std::vector<JobObject *> listOfFiles);
+    RestorePoint* FactoryMethod() const override;
 };
 
 class BackupJob {
 private:
     std::string name;
-    std::string type;
-    std::string path;
-    std::vector<std::string> files;
+    std::string typeOfStorage;
+    std::string pathOfNewStorage;
+    std::vector<JobObject *> listOfFiles;
+
     int count;
 public:
-    BackupJob(std::string name, std::string type, std::string path);
-    void addObject(std::vector <std::string> files);
-    void removeObject(std::vector <std::string> files);
-    void createRestorePoint();
-    ~BackupJob();
-};
+    BackupJob setName(std::string name);
+    BackupJob setType(std::string type);
+    BackupJob setPath(std::string path);
 
-class JobObject {
-private:
-    std::string name;
-    std::string path;
-public:
-    JobObject(std::string name, std::string path);
-    std::string getName();
+    void addJobObject(std::vector <std::string> files);
+    void removeJobObject(std::vector <std::string> files);
+    RestorePoint* createRestorePoint();
+    ~BackupJob();
 };
 
 class Storage {
 public:
-    void copy(std::vector<std::string> files, std::string type, std::string path);
+    void copyFile(JobObject *jobObject);
 };
 
 class Repository {
