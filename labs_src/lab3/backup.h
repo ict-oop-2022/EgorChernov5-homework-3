@@ -6,15 +6,6 @@
 #include "elzip.hpp"
 #include <algorithm>
 
-class RestorePoint {
-private:
-    std::string name;
-    std::string type;
-    std::string path;
-public:
-    RestorePoint(std::string name, std::string type, std::string path, std::vector <std::string> files);
-};
-
 class JobObject {
 private:
     std::string path;
@@ -25,19 +16,31 @@ public:
     ~JobObject();
 };
 
+class Storage {
+public:
+    void copyFile(JobObject *jobObject);
+};
+
+class RestorePoint {
+private:
+    std::string name;
+    std::string type;
+    std::string path;
+    std::vector<Storage *> Storage;
+public:
+    RestorePoint(std::vector<JobObject *> listOfFiles, std::string typeOfStorage);
+};
+
 class Backup {
 private:
     std::vector<RestorePoint *> listOfRestorePoint;
-    std::vector<JobObject *> listOfFiles;
 public:
-    Backup(std::vector<JobObject *> listOfFiles);
-    virtual RestorePoint* FactoryMethod() const = 0;
+    virtual RestorePoint* FactoryMethod(std::vector<JobObject *> listOfFiles, std::string typeOfStorage) const = 0;
 };
 
 class ConcreteBackup: public Backup {
 public:
-    ConcreteBackup(std::vector<JobObject *> listOfFiles);
-    RestorePoint* FactoryMethod() const override;
+    RestorePoint* FactoryMethod(std::vector<JobObject *> listOfFiles, std::string typeOfStorage) const override;
 };
 
 class BackupJob {
@@ -57,11 +60,6 @@ public:
     void removeJobObject(std::vector <std::string> files);
     RestorePoint* createRestorePoint();
     ~BackupJob();
-};
-
-class Storage {
-public:
-    void copyFile(JobObject *jobObject);
 };
 
 class Repository {

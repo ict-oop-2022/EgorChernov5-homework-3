@@ -1,6 +1,6 @@
 #include "backup.h"
 
-RestorePoint::RestorePoint(std::string name, std::string type, std::string path, std::vector <std::string> files) {
+/*RestorePoint::RestorePoint(std::string name, std::string type, std::string path, std::vector <std::string> files) {
     this->name = name;
 
     this->path = path;
@@ -17,7 +17,8 @@ RestorePoint::RestorePoint(std::string name, std::string type, std::string path,
         }
     } else
         throw std::invalid_argument("Type didn't found.");
-}
+}*/
+
 
 ///////////////////
 BackupJob BackupJob::setName(std::string name) {
@@ -114,8 +115,8 @@ RestorePoint* BackupJob::createRestorePoint() {
     name = name + '_' + std::to_string(count);
 
     return new RestorePoint(name, typeOfStorage, pathOfNewStorage, listOfFiles);*/
-    Backup *backup = new ConcreteBackup(listOfFiles);
-    backup->FactoryMethod();
+    Backup *backup = new ConcreteBackup();
+    backup->FactoryMethod(listOfFiles, typeOfStorage);
 
 
     delete backupJob;
@@ -142,12 +143,10 @@ std::string JobObject::getPath() {
 
 JobObject::~JobObject() {}
 
-///////////////////
-Backup::Backup(std::vector<JobObject *> listOfFiles) {
-    this->listOfFiles.assign(listOfFiles.begin(), listOfFiles.end());
-}
+/////////////////// Backup
+
 
 ///////////////////
-RestorePoint* ConcreteBackup::FactoryMethod() const {
-    return nullptr;
+RestorePoint* ConcreteBackup::FactoryMethod(std::vector<JobObject *> listOfFiles, std::string typeOfStorage) const {
+    return new RestorePoint(listOfFiles, typeOfStorage);
 }
