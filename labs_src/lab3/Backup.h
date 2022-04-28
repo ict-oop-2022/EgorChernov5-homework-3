@@ -7,10 +7,12 @@ class Backup {
 private:
     std::vector<RestorePoint *> listOfRestorePoint;
 public:
-    virtual RestorePoint* FactoryMethod(std::vector<JobObject *> listOfFiles, std::string typeOfStorage) const = 0;
+    virtual RestorePoint* FactoryMethod() const = 0;
+    void addRestorePoint(RestorePoint *restorePoint);
+    virtual ~Backup();
 };
 
-class ConcreteBackup: public Backup {
+class ConcreteBackupRP: public Backup {
 public:
-    RestorePoint* FactoryMethod(std::vector<JobObject *> listOfFiles, std::string typeOfStorage) const override;
+    RestorePoint* FactoryMethod() const override;
 };

@@ -2,6 +2,7 @@
 
 #include "BackupJob.h"
 #include "Storage.h"
+#include "Repository.h"
 
 class RestorePoint {
 private:
@@ -10,5 +11,7 @@ private:
     std::string path;
     std::vector<Storage *> Storage;
 public:
-    RestorePoint(std::vector<JobObject *> listOfFiles, std::string typeOfStorage);
+    RestorePoint();
+    void setParams(std::string name, std::string type, std::string path);
+    void createStorage(std::vector<JobObject *> listOfFiles);
 };

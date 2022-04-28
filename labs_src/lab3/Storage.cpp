@@ -1,5 +1,9 @@
-//
-// Created by purpleduck on 28.04.2022.
-//
-
 #include "Storage.h"
+
+Storage::Storage(std::string name, std::string path) {
+
+}
+
+void Storage::copyJobObject() {
+
+}

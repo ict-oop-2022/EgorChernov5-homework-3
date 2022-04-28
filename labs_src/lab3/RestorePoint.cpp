@@ -18,3 +18,20 @@
     } else
         throw std::invalid_argument("Type didn't found.");
 }*/
+RestorePoint::RestorePoint() {}
+
+void RestorePoint::setParams(std::string name, std::string type, std::string path) {
+    this->name = name;
+    this->type = type;
+    this->path = path;
+}
+
+void RestorePoint::createStorage(std::vector<JobObject *> listOfFiles) {
+    if (type.empty())
+        throw std::invalid_argument("Parameters wasn't set.");
+
+    FileSys *fileSys = new MockFileSys;
+    Repository *repository = new Repository(fileSys);
+
+    repository->save(listOfFiles, name, type, path);
+}

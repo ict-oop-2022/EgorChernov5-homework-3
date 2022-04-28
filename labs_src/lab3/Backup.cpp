@@ -1,5 +1,15 @@
 #include "Backup.h"
 
-RestorePoint* ConcreteBackup::FactoryMethod(std::vector<JobObject *> listOfFiles, std::string typeOfStorage) const {
-    return new RestorePoint(listOfFiles, typeOfStorage);
+void Backup::addRestorePoint(RestorePoint *restorePoint) {
+    listOfRestorePoint.push_back(restorePoint);
+}
+
+Backup::~Backup() {
+    for (int i = 0; i < listOfRestorePoint.size(); i++) {
+        delete listOfRestorePoint[i];
+    }
+}
+
+RestorePoint* ConcreteBackupRP::FactoryMethod() const {
+    return new RestorePoint();
 }

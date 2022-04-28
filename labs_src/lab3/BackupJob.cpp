@@ -12,7 +12,7 @@ BackupJob BackupJob::setType(std::string type) {
     else if (type == "Single storage")
         this->typeOfStorage = type;
     else
-        throw std::invalid_argument("Type didn't found.");
+        throw std::invalid_argument("Type wasn't found.");
     return *this;
 }
 
@@ -101,7 +101,7 @@ void BackupJob::removeJobObject(std::vector<JobObject *> listOfFiles) {
         std::cout << "You didn't add any files." << std::endl;
 }
 
-RestorePoint* BackupJob::createRestorePoint() {
+void BackupJob::createRestorePoint() {
     /*count += 1;
     if (name.empty()) {
         throw std::invalid_argument("You should set a name of Restore Point.");
@@ -118,15 +118,18 @@ RestorePoint* BackupJob::createRestorePoint() {
     name = name + '_' + std::to_string(count);
 
     return new RestorePoint(name, typeOfStorage, pathOfNewStorage, listOfFiles);*/
-    Backup *backup = new ConcreteBackup();
-    backup->FactoryMethod(listOfFiles, typeOfStorage);
+    count += 1;
+    RestorePoint *restorePoint = backup->FactoryMethod();
+    restorePoint->setParams(("_" + count), typeOfStorage, pathOfNewStorage);
+    restorePoint->createStorage(listOfFiles);
 
+    backup->addRestorePoint(restorePoint);
+}
 
-    delete backupJob;
+void BackupJob::showRestorePoint() {
+
 }
 
 BackupJob::~BackupJob() {
-    for (int i = 0; i < listOfFiles.size(); ++i) {
-        delete listOfFiles[i];
-    }
+    delete backup;
 }

@@ -1,9 +1,12 @@
-#ifndef ICT_HOMEWORK_3_STORAGE_H
-#define ICT_HOMEWORK_3_STORAGE_H
+#pragma once
+
+#include <iostream>
 
 class Storage {
+private:
+    std::string name;
+    std::string path;
 public:
-    void copyFile(JobObject *jobObject);
+    Storage(std::string name, std::string path);
+    void copyJobObject();
 };
-
-#endif //ICT_HOMEWORK_3_STORAGE_H

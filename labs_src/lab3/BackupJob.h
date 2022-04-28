@@ -16,17 +16,19 @@ private:
     std::string typeOfStorage;
     std::string pathOfNewStorage;
     std::vector<JobObject *> listOfFiles;
+    Backup *backup = new ConcreteBackupRP();
 
-    int count;
+    int count = 0;
 public:
     BackupJob setName(std::string name);
     BackupJob setType(std::string type);
     BackupJob setPath(std::string path);
 
-//    void addJobObject(std::vector <std::string> files);
+    /*void addJobObject(std::vector <std::string> files);
+    void removeJobObject(std::vector <std::string> files);*/
     void addJobObject(std::vector<JobObject *> listOfFiles);
-//    void removeJobObject(std::vector <std::string> files);
     void removeJobObject(std::vector<JobObject *> listOfFiles);
-    RestorePoint* createRestorePoint();
+    void createRestorePoint();
+    void showRestorePoint();
     ~BackupJob();
 };
