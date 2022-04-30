@@ -3,7 +3,6 @@
 #include <iostream>
 #include <vector>
 #include <string>
-#include <fstream>
 #include "elzip.hpp"
 #include <algorithm>
 
@@ -28,7 +27,7 @@ public:
     void removeJobObject(std::vector <std::string> files);*/
     void addJobObject(std::vector<JobObject *> listOfFiles);
     void removeJobObject(std::vector<JobObject *> listOfFiles);
-    void createRestorePoint();
+    void createRestorePoint(std::string fileSystem);
     void showRestorePoint();
     ~BackupJob();
 };

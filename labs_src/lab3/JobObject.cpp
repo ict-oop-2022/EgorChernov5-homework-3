@@ -13,4 +13,8 @@ std::string JobObject::getPath() {
     return this->path;
 }
 
+std::string JobObject::getName() {
+    return this->name;
+}
+
 JobObject::~JobObject() {}

@@ -17,10 +17,16 @@ BackupJob BackupJob::setType(std::string type) {
 }
 
 BackupJob BackupJob::setPath(std::string path) {
-    if (path == path.substr(path.find_last_of("/") + 1))
-        this->pathOfNewStorage = "./" + path;
-    else
+    if (path.empty())
+        throw std::invalid_argument("You should write path.");
+    else if (path.substr(path.find_last_of("/") + 1).empty())
         this->pathOfNewStorage = path;
+    else if (path == ".")
+        this->pathOfNewStorage = path + "/";
+    else if (path == path.substr(path.find_last_of("/") + 1))
+        this->pathOfNewStorage = "./" + path + "/";
+    else
+        this->pathOfNewStorage = path + "/";
     return *this;
 }
 
@@ -101,7 +107,7 @@ void BackupJob::removeJobObject(std::vector<JobObject *> listOfFiles) {
         std::cout << "You didn't add any files." << std::endl;
 }
 
-void BackupJob::createRestorePoint() {
+void BackupJob::createRestorePoint(std::string fileSystem) {
     /*count += 1;
     if (name.empty()) {
         throw std::invalid_argument("You should set a name of Restore Point.");
@@ -118,10 +124,13 @@ void BackupJob::createRestorePoint() {
     name = name + '_' + std::to_string(count);
 
     return new RestorePoint(name, typeOfStorage, pathOfNewStorage, listOfFiles);*/
+    if (fileSystem != "Mock" or fileSystem != "Real")
+        throw std::invalid_argument("Type of file system wasn't found.");
+
     count += 1;
     RestorePoint *restorePoint = backup->FactoryMethod();
-    restorePoint->setParams(("_" + count), typeOfStorage, pathOfNewStorage);
-    restorePoint->createStorage(listOfFiles);
+    restorePoint->setParams(("_" + std::to_string(count)), typeOfStorage, pathOfNewStorage);
+    restorePoint->createStorage(listOfFiles, fileSystem);
 
     backup->addRestorePoint(restorePoint);
 }

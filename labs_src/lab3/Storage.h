@@ -7,6 +7,5 @@ private:
     std::string name;
     std::string path;
 public:
-    Storage(std::string name, std::string path);
-    void copyJobObject();
+    Storage(std::string path);
 };

@@ -9,5 +9,6 @@ private:
 public:
     JobObject(std::string path);
     std::string getPath();
+    std::string getName();
     ~JobObject();
 };

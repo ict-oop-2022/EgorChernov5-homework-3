@@ -9,9 +9,9 @@ private:
     std::string name;
     std::string type;
     std::string path;
-    std::vector<Storage *> Storage;
+    std::vector<Storage *> storage;
 public:
     RestorePoint();
     void setParams(std::string name, std::string type, std::string path);
-    void createStorage(std::vector<JobObject *> listOfFiles);
+    void createStorage(std::vector<JobObject *> listOfFiles, std::string fileSystem);
 };
