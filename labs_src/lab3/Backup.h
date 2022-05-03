@@ -1,7 +1,6 @@
 #pragma once
 
 #include "RestorePoint.h"
-#include "JobObject.h"
 
 class Backup {
 private:

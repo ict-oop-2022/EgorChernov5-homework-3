@@ -1,6 +1,7 @@
 #pragma once
 
-#include "BackupJob.h"
+#include <iostream>
+#include <string>
 
 class JobObject {
 private:

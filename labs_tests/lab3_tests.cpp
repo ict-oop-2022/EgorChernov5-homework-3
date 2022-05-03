@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include "lab3/lab3_functions.h"
+#include "lab3/BackupJob.h"
 
 TEST(CreateBackups, TwoRestorePointsAndThreeStoragesCreated) {
     

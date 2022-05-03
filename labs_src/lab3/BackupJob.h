@@ -1,13 +1,12 @@
 #pragma once
 
-#include <iostream>
 #include <vector>
-#include <string>
-#include "elzip.hpp"
 #include <algorithm>
 
-#include "Backup.h"
 #include "JobObject.h"
+#include "Backup.h"
+
+// #include "elzip.hpp"
 
 class BackupJob {
 private:
@@ -23,11 +22,8 @@ public:
     BackupJob setType(std::string type);
     BackupJob setPath(std::string path);
 
-    /*void addJobObject(std::vector <std::string> files);
-    void removeJobObject(std::vector <std::string> files);*/
     void addJobObject(std::vector<JobObject *> listOfFiles);
     void removeJobObject(std::vector<JobObject *> listOfFiles);
     void createRestorePoint(std::string fileSystem);
-    void showRestorePoint();
     ~BackupJob();
 };

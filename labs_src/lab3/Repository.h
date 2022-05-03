@@ -1,8 +1,10 @@
 #pragma once
 
+#include <vector>
 #include <fstream>
 
 #include "JobObject.h"
+#include "Storage.h"
 
 class FileSys {
 public:
