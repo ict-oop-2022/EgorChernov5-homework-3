@@ -12,19 +12,22 @@ void RestorePoint::createStorage(std::vector<JobObject *> listOfFiles, std::stri
     if (type.empty())
         throw std::invalid_argument("Parameters wasn't set.");
 
-    FileSys *fileSys = nullptr;
-
-    if (fileSystem == "Mock")
-        fileSys = new MockFileSys;
-    else if (fileSystem == "Real")
-        fileSys = new RealFileSys;
-
-    Repository *repository = new Repository(fileSys);
-    std::vector<Storage *> storage = repository->save(listOfFiles, name, type, path);
-    this->storage.assign(storage.begin(), storage.end());
-
-    delete fileSys;
-    delete repository;
+    if (fileSystem == "Mock") {
+        FileSys *fileSys = new MockFileSys();
+        Repository *repository = new Repository(fileSys);
+        std::vector<Storage *> storage = repository->save(listOfFiles, name, type, path);
+        this->storage.assign(storage.begin(), storage.end());
+        delete fileSys;
+        delete repository;
+    }
+    else if (fileSystem == "Real") {
+        FileSys *fileSys = new RealFileSys();
+        Repository *repository = new Repository(fileSys);
+        std::vector<Storage *> storage = repository->save(listOfFiles, name, type, path);
+        this->storage.assign(storage.begin(), storage.end());
+        delete fileSys;
+        delete repository;
+    }
 }
 
 RestorePoint::~RestorePoint() {

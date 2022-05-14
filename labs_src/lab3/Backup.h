@@ -6,12 +6,14 @@ class Backup {
 private:
     std::vector<RestorePoint *> listOfRestorePoint;
 public:
-    virtual RestorePoint* FactoryMethod() const = 0;
+    RestorePoint* FactoryMethod();
     void addRestorePoint(RestorePoint *restorePoint);
     virtual ~Backup();
 };
 
-class ConcreteBackupRP: public Backup {
-public:
-    RestorePoint* FactoryMethod() const override;
-};
+//class ConcreteBackupRP: public Backup {
+//
+//public:
+//    RestorePoint* FactoryMethod() const override;
+//    void addRestorePoint(RestorePoint *restorePoint) const override;
+//};

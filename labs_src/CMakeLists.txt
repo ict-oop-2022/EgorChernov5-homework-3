@@ -1,6 +1,6 @@
 add_library(labs lab3/Backup.cpp lab3/Backup.h lab3/JobObject.cpp lab3/JobObject.h
         lab3/BackupJob.cpp lab3/BackupJob.h lab3/Repository.cpp lab3/Repository.h
-        lab3/RestorePoint.cpp lab3/RestorePoint.h lab3/Storage.cpp lab3/Storage.h)
+        lab3/RestorePoint.cpp lab3/RestorePoint.h lab3/Storage.cpp lab3/Storage.h lab3/main.cpp)
 
 target_sources(labs
   PRIVATE
@@ -11,6 +11,7 @@ target_sources(labs
         lab3/Repository.cpp
         lab3/RestorePoint.cpp
         lab3/Storage.cpp
+        lab3/main.cpp
   PUBLIC
         lab3/lab3_functions.h
         lab3/Backup.h
@@ -25,7 +26,8 @@ target_include_directories(labs
   PUBLIC
         .
   )
-target_link_libraries(labs PUBLIC elzip)
+#target_link_libraries(labs PUBLIC elzip)
+#include_directories("${gmock_SOURCE_DIR}/include")
 
 # we use this to get code coverage
 # flags are only valid with the GNU compiler and on Linux

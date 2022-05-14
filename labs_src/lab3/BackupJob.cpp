@@ -1,22 +1,20 @@
 #include "BackupJob.h"
 
-BackupJob BackupJob::setName(std::string name) {
+void BackupJob::setName(std::string name) {
     this->name = name;
     count = 0;
-    return *this;
 }
 
-BackupJob BackupJob::setType(std::string type) {
-    if (type == "Split storages")
+void BackupJob::setType(std::string type) {
+    if (type == "Split storage")
         this->typeOfStorage = type;
     else if (type == "Single storage")
         this->typeOfStorage = type;
     else
         throw std::invalid_argument("Type wasn't found.");
-    return *this;
 }
 
-BackupJob BackupJob::setPath(std::string path) {
+void BackupJob::setPath(std::string path) {
     if (path.empty())
         throw std::invalid_argument("You should write path.");
     else if (path.substr(path.find_last_of("/") + 1).empty())
@@ -27,7 +25,6 @@ BackupJob BackupJob::setPath(std::string path) {
         this->pathOfNewStorage = "./" + path + "/";
     else
         this->pathOfNewStorage = path + "/";
-    return *this;
 }
 
 void BackupJob::addJobObject(std::vector<JobObject *> listOfFiles) {
@@ -59,7 +56,7 @@ void BackupJob::removeJobObject(std::vector<JobObject *> listOfFiles) {
 }
 
 void BackupJob::createRestorePoint(std::string fileSystem) {
-    if (fileSystem != "Mock" or fileSystem != "Real")
+    if (fileSystem != "Mock" and fileSystem != "Real")
         throw std::invalid_argument("Type of file system wasn't found.");
 
     count += 1;

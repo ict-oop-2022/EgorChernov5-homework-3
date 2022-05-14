@@ -14,13 +14,13 @@ private:
     std::string typeOfStorage;
     std::string pathOfNewStorage;
     std::vector<JobObject *> listOfFiles;
-    Backup *backup = new ConcreteBackupRP();
+    Backup *backup = new Backup();
 
     int count = 0;
 public:
-    BackupJob setName(std::string name);
-    BackupJob setType(std::string type);
-    BackupJob setPath(std::string path);
+    void setName(std::string name);
+    void setType(std::string type);
+    void setPath(std::string path);
 
     void addJobObject(std::vector<JobObject *> listOfFiles);
     void removeJobObject(std::vector<JobObject *> listOfFiles);
