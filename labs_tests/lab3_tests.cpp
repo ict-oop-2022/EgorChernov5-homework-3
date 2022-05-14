@@ -15,7 +15,6 @@ TEST(CreateBackups, SplitStorage) {
 
     ASSERT_EQ(backupJob.countOfJobObject(), 2);
 
-    ASSERT_NO_THROW(backupJob.createRestorePoint("Mock"));
     backupJob.createRestorePoint("Mock");
 
     backupJob.removeJobObject({jobObject1});
