@@ -76,16 +76,16 @@ std::vector<Storage *> RealFileSys::save(std::vector<JobObject *> listOfFiles, s
 }
 
 std::vector<Storage *> MockFileSys::save(std::vector<JobObject *> listOfFiles, std::string name, std::string type, std::string path) const {
-    std::string path1;
+    std::string newPath;
     std::vector<Storage *> storage;
 
     for (int i = 0; i < listOfFiles.size(); i++) {
         if (type == "Single storage") {
-            path1 = path.append(listOfFiles[i]->getName()).append(name);
+            newPath = path.append(listOfFiles[i]->getName()).append(name);
         } else if (type == "Split storage") {
-            path1 = path.append(std::to_string(i) + "/").append(listOfFiles[i]->getName()).append(name);
+            newPath = path.append(std::to_string(i) + "/").append(listOfFiles[i]->getName()).append(name);
         }
-        storage.push_back(new Storage(path1));
+        storage.push_back(new Storage(newPath));
     }
     return storage;
 }

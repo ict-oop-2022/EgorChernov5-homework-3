@@ -8,7 +8,9 @@ private:
 public:
     RestorePoint* FactoryMethod();
     void addRestorePoint(RestorePoint *restorePoint);
-    virtual ~Backup();
+    int countOfRestorePoint();
+    std::vector<RestorePoint *> getlistOfRestorePoint();
+    ~Backup();
 };
 
 //class ConcreteBackupRP: public Backup {

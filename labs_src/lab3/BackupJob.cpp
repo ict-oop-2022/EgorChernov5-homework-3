@@ -40,7 +40,6 @@ void BackupJob::removeJobObject(std::vector<JobObject *> listOfFiles) {
                 // проверка на совпадение
                 if (listOfFiles[i] == this->listOfFiles[j]) {
                     auto n = find(this->listOfFiles.begin(), this->listOfFiles.end(), this->listOfFiles[j]);
-                    delete this->listOfFiles[j];
                     this->listOfFiles.erase(n);
                     check = 0;
                     break;
@@ -65,6 +64,21 @@ void BackupJob::createRestorePoint(std::string fileSystem) {
     restorePoint->createStorage(listOfFiles, fileSystem);
 
     backup->addRestorePoint(restorePoint);
+}
+
+int BackupJob::countOfJobObject() {
+    return listOfFiles.size();
+}
+
+int BackupJob::countOfRestorePoint() {
+    return backup->countOfRestorePoint();
+}
+
+int BackupJob::countOfStorage() {
+    int count = 0;
+    for (RestorePoint *i : backup->getlistOfRestorePoint())
+        count += i->countOfStorage();
+    return count;
 }
 
 BackupJob::~BackupJob() {

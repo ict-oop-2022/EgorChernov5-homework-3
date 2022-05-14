@@ -25,5 +25,10 @@ public:
     void addJobObject(std::vector<JobObject *> listOfFiles);
     void removeJobObject(std::vector<JobObject *> listOfFiles);
     void createRestorePoint(std::string fileSystem);
+
+    int countOfJobObject();
+    int countOfRestorePoint();
+    int countOfStorage();
+
     ~BackupJob();
 };

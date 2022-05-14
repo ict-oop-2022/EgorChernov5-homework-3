@@ -16,5 +16,6 @@ public:
     RestorePoint();
     void setParams(std::string name, std::string type, std::string path);
     void createStorage(std::vector<JobObject *> listOfFiles, std::string fileSystem);
+    int countOfStorage();
     ~RestorePoint();
 };

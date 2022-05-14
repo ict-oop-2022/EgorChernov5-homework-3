@@ -30,6 +30,10 @@ void RestorePoint::createStorage(std::vector<JobObject *> listOfFiles, std::stri
     }
 }
 
+int RestorePoint::countOfStorage() {
+    return storage.size();
+}
+
 RestorePoint::~RestorePoint() {
     for (int i = 0; i < storage.size(); i++) {
         delete storage[i];
