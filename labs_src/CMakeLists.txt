@@ -25,8 +25,6 @@ target_include_directories(labs
   PUBLIC
         .
   )
-#target_link_libraries(labs PUBLIC elzip)
-#include_directories("${gmock_SOURCE_DIR}/include")
 
 # we use this to get code coverage
 # flags are only valid with the GNU compiler and on Linux
