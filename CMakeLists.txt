@@ -20,7 +20,8 @@ if(NOT GCOV_PATH)
 endif()
 
 add_subdirectory(labs_src)
+add_subdirectory(labs_tests)
+#add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/extlibs/11Zip)
+#add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/googletest-release-1.11.0)
 
 enable_testing()
-
-add_subdirectory(labs_tests)
